@@ -2,8 +2,6 @@ var canvas=document.querySelector('canvas');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-innerWidth=window.innerWidth;
-innerHeight=window.innerHeight;
 var c = canvas.getContext('2d');
 
 color=[
@@ -19,7 +17,27 @@ color=[
     '#261C1A'
 ]
 
-//creating class for handling all 
+//adding resize canvas on window scroll changes
+window.addEventListener('resize',function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+})
+
+var circleArray=[];
+
+function init(){
+    circleArray=[];
+    for(let i=0;i<250;i++){
+        var x=Math.random() * canvas.width;
+        var y=Math.random() * canvas.height;
+        var dx=(Math.random() - 0.5)*8;
+        var dy=(Math.random() - 0.5)*8;
+        var radius=Math.floor(Math.random() * 7) + 2;
+        circleArray.push(new Circles(x,y,radius,dx,dy))
+    }
+}
+
 
 function Circles(x,y,radius,dx,dy){
     this.x=x;
@@ -38,10 +56,10 @@ function Circles(x,y,radius,dx,dy){
     }
 
     this.update=function(){
-        if( this.x + this.radius > innerWidth || this.x - this.radius < 0 ){ 
+        if( this.x + this.radius > canvas.width || this.x - this.radius < 0 ){ 
             this.dx =- this.dx;
          }    
-        if( this.y + this.radius > innerHeight || this.y- this.radius < 0 ){ 
+        if( this.y + this.radius > canvas.height || this.y- this.radius < 0 ){ 
             this.dy =- this.dy;
          }    
         this.x += this.dx;
@@ -50,25 +68,15 @@ function Circles(x,y,radius,dx,dy){
     }
 }
 
-var circleArray=[];
-
-for(let i=0;i<250;i++){
-    var x=Math.random() * innerWidth;
-    var y=Math.random() * innerHeight;
-    var dx=(Math.random() - 0.5)*8;
-    var dy=(Math.random() - 0.5)*8;
-    var radius=Math.floor(Math.random() * 7) + 2;
-    circleArray.push(new Circles(x,y,radius,dx,dy))
-}
-
 //to animate we have to increase x and y with some velocity
 function animate(){
     requestAnimationFrame(animate);
-    c.clearRect(0,0,innerWidth,innerHeight);
+    c.clearRect(0,0,canvas.width,canvas.height);
     for(let i=0;i<circleArray.length;i++){
         circleArray[i].update();
     }
 
 }
 
+init();
 animate();
