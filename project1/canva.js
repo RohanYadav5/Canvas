@@ -45,7 +45,7 @@ function Circles(x,y,radius,dx,dy){
 
 var circleArray=[];
 
-for(let i=0;i<70;i++){
+for(let i=0;i<300;i++){
     var x=Math.random() * innerWidth;
     var y=Math.random() * innerHeight;
     var dx=(Math.random() - 0.5)*8;
